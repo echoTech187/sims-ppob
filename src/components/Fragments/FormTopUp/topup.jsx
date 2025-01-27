@@ -5,7 +5,7 @@ async function Topup(e) {
     const nominal = e.target.topup.value
 
     if(nominal < 10000 || nominal > 1000000) {
-        toast.error('Nominal Tidak Sesuai',{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored"})
+        toast.error('Nominal Top Up Tidak Sesuai',{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored"})
         return false;
     }
     const data = await TopUp(parseInt(nominal))
