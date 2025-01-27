@@ -14,7 +14,6 @@ const AccountForm = () => {
     const [edit, setEdit] = useState(false)
 
     const [defaultImage, setDefaultImage] = useState("")
-    const [isDefaultImage, setIsDefaultImage] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -27,10 +26,8 @@ const AccountForm = () => {
                 const splitImage = profile_image.toString().split("/")[4]
                 if (splitImage !== 'null') {
                     setDefaultImage(profile_image)
-                    setIsDefaultImage(false)
                 }else{
                     setDefaultImage("src/assets/Profile Photo.png")
-                    setIsDefaultImage(true)
                 }
                 
             }

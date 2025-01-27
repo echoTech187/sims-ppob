@@ -1,4 +1,4 @@
-import { userProfile, Register } from '../../../api/Membership'
+import { userProfile } from '../../../api/Membership'
 
 async function profile() {
     const data = userProfile()

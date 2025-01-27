@@ -9,7 +9,6 @@ const Hero = () => {
     const dispatch = useDispatch()
     const { pathname } = useLocation()
     const path = pathname.split('/')
-    console.log(path);
     const { data, photo,isLoading  } = useSelector((state) => state.user)
     useEffect(() => {
         async function user() {
