@@ -11,7 +11,7 @@ export default function LoginPage() {
             <LoginLayout>
                 <div className="container">
                     <div className='flex flex-col items-center mx-auto gap-8'>
-                        <Header variant="login" logo={logo} brand="SIMS PPOB" desc="Masuk atau buat akun untuk memulai" />
+                        <Header variant="login" logo={logo} brand="SIMS PPOB - Eko Susanto" desc="Masuk atau buat akun untuk memulai" />
                         <LoginForm />
                         <Footer variant="login">belum punya akun? registrasi <Link to='/register' className='text-red-600 font-semibold'>disini</Link></Footer>
                     </div>

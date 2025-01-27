@@ -11,7 +11,7 @@ const RegisterPage =(props)=>{
             <LoginLayout>
                 <div className="container">
                     <div className='flex flex-col items-center mx-auto gap-8'>
-                        <Header variant="register" logo={logo} brand="SIMS PPOB" desc="Masuk atau buat akun untuk memulai" />
+                        <Header variant="register" logo={logo} brand="SIMS PPOB - Eko Susanto" desc="Masuk atau buat akun untuk memulai" />
                         <RegisterForm />
                         <Footer variant="register">sudah punya akun? login <Link to='/login' className='text-red-600 font-semibold'>disini</Link></Footer>
                     </div>
