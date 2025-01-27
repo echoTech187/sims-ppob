@@ -10,7 +10,14 @@
 }
 
 .user-saldo-bg {
-  background-image: url("./src/assets/Background Saldo.png");
+  background-image: url("src/assets/Background Saldo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+}
+.user-saldo-bg-payment {
+  background-image: url("../src/assets/Background Saldo.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

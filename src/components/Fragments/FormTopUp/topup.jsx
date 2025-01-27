@@ -1,11 +1,13 @@
 import { TopUp } from "../../../api/Transaction"
+import {toast} from 'react-toastify'
 async function Topup(e) {
     e.preventDefault()
     const nominal = e.target.topup.value
-    console.log(nominal)
     const data = await TopUp(parseInt(nominal))
-    alert(data.message)
-    window.location.href = '/transaction'
+    toast.success(data.message,{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored",onClose: () => {
+        window.location.href = '/transaction'
+    }})
+    
     
 }
 

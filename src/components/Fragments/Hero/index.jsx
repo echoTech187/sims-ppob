@@ -1,52 +1,29 @@
 import { useEffect, useState } from "react"
-import { userProfile } from "../../../api/Membership"
-import { Balance } from "../../../api/Transaction"
 import { useLocation } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { getUser } from "../../../redux/slices/user"
 const Hero = () => {
-    const { pathname } = useLocation()
-    const [me, changeUser] = useState([])
-    const [saldo, setSaldo] = useState(0)
-    const [loading, setLoading] = useState(true)
     const [showSaldo, setShowSaldo] = useState(false)
 
-    const [defaultImage, setDefaultImage] = useState("")
+
+    const dispatch = useDispatch()
+    const { pathname } = useLocation()
+    const path = pathname.split('/')
+    console.log(path);
+    const { data, photo,isLoading  } = useSelector((state) => state.user)
     useEffect(() => {
-        async function getUser() {
-            const users = await userProfile()
-            changeUser(users?.data)
-
-            if (users?.data?.profile_image !== null) {
-                const { profile_image } = users?.data
-                const splitImage = profile_image.toString().split("/")[4]
-                if (splitImage !== 'null') {
-                    setDefaultImage(profile_image)
-                } else {
-                    const initPathname = pathname.split('/')
-                    if (initPathname[1] === 'payment') {
-                        setDefaultImage("../src/assets/Profile Photo.png")
-                    } else {
-                        setDefaultImage("src/assets/Profile Photo.png")
-                    }
-
-                }
-
-            }
-
+        async function user() {
+            dispatch(getUser())
         }
-        async function getSaldo() {
-            const balance = await Balance()
-            setSaldo(balance?.data.balance)
-            setTimeout(() => setLoading(false), 1000);
-        }
-        getUser()
-        getSaldo()
+        user()
 
     }, []);
+    
 
     function ShowHideSaldo() {
         setShowSaldo(!showSaldo)
     }
-    if (loading) {
+    if (isLoading) {
         return (
             <div className="container mx-auto py-8 px-8">
                 <div className="flex items-center justify-between">
@@ -72,7 +49,7 @@ const Hero = () => {
         )
     }
 
-
+    
     return (
         <div className="container mx-auto py-8 px-8">
             <div className="flex items-center justify-between">
@@ -80,21 +57,21 @@ const Hero = () => {
                     <div className="relative w-24 h-24">
                         <img
                             className="absolute top-0 left-0 w-full h-full border border-gray-200 rounded-full"
-                            src={defaultImage}
+                            src={photo}
                             alt=""
                         />
                     </div>
                     <div>
                         <p className="text-xl mb-0">Selamat Datang,</p>
                         <p className="text-3xl font-semibold">
-                            {me?.first_name + " " + me?.last_name}
+                            {data?.first_name + " " + data?.last_name}
                         </p>
                     </div>
                 </div>
-                <div className="user-saldo-bg flex-1 h-[150px] text-white">
+                <div className={`${path[1] === "payment" ? "user-saldo-bg-payment" : "user-saldo-bg"}  flex-1 h-[150px] text-white`}>
                     <div className="flex flex-col justify-center gap-4 px-6 h-[150px]">
                         <p className="text-lg font-semibold">Saldo anda</p>
-                        <p className="text-3xl font-semibold flex gap-2 items-center">Rp. {showSaldo ? Number(saldo).toLocaleString('id-ID') : <span className="text-sm">&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;</span>}</p>
+                        <p className="text-3xl font-semibold flex gap-2 items-center">Rp. {showSaldo ? Number(data.balance).toLocaleString('id-ID') : <span className="text-sm">&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;</span>}</p>
                         <p className="text-sm font-semibold" onClick={() => ShowHideSaldo()}>{showSaldo ? "Tutup Saldo" : "Lihat Saldo"}</p>
                     </div>
                 </div>

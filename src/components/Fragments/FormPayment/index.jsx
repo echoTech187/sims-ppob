@@ -3,6 +3,7 @@ import { MdMoney } from "react-icons/md"
 import { useLocation } from "react-router-dom"
 import { Services } from "../../../api/Information"
 import { Transaction } from "../../../api/Transaction"
+import {toast, ToastContainer} from 'react-toastify'
 const PaymentForm = () => {
     const { pathname } = useLocation()
     const [tarif, setTarif] = useState(0)
@@ -34,11 +35,11 @@ const PaymentForm = () => {
         const postData = async () => {
             const data = await Transaction(payload)
             if(data.status === 0) {
-                alert(data.message)
-                window.location.href = '/transaction'
+                toast.success(data.message,{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored",onClose: () => {
+                    window.location.href = '/transaction'
+                }})
             }else {
-                alert(data.message)
-                window.location.href = pathname
+                toast.error(data.message,{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored"})
             }
         }
         postData()
@@ -63,6 +64,7 @@ const PaymentForm = () => {
                     </div>
                 </form>
             </div>
+            <ToastContainer />
         </>
     )
 }

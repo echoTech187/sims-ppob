@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authSlice from './slices/auth'
-import messageSlice from './slices/message'
-import loadingSlice from './slices/loading'
+import userSlice from './slices/user'
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
-    message: messageSlice,
-    loading: loadingSlice
+    user: userSlice
   }
 })

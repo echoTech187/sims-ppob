@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { MdMoney } from "react-icons/md"
 import { Topup } from "./topup"
-
+import { ToastContainer} from "react-toastify"
 const allowTopup = [10000, 20000, 50000, 100000, 250000, 500000]
 
 const TopUpForm = () => {
@@ -47,6 +47,7 @@ const TopUpForm = () => {
                     </div>
                 </form>
             </div>
+            <ToastContainer />
         </>
     )
 }

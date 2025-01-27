@@ -3,9 +3,11 @@ import { FaRegUser } from "react-icons/fa"
 import { MdAlternateEmail } from "react-icons/md"
 import TextInput from "../../Elements/TextInput"
 import Button from "../../Elements/Button"
-import { Logout } from "../FormLogin/auth"
 import { useEffect, useState } from "react"
 import { updatePhoto, userProfile, updateProfile } from "../../../api/Membership"
+import { useDispatch } from "react-redux"
+import { AuthLogout } from "../../../redux/slices/auth"
+import { ToastContainer, toast } from 'react-toastify';
 const AccountForm = () => {
 
     const [user, setUser] = useState({})
@@ -13,6 +15,8 @@ const AccountForm = () => {
 
     const [defaultImage, setDefaultImage] = useState("")
     const [isDefaultImage, setIsDefaultImage] = useState(false)
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
         async function getUser() {
@@ -38,25 +42,24 @@ const AccountForm = () => {
         const file = e.target.files[0]
         if (file) {
             if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
-                alert('Format file harus jpg/png')
+                toast.error('Format file harus jpg/png',{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored"})
                 return false;
             }
             if (file.size > 100 * 1024) {
-                alert('Ukuran file tidak boleh lebih dari 100kb')
+                toast.error('Ukuran file tidak boleh lebih dari 100kb',{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored"})
                 return false;
             }
-            console.log(file);
             const form = new FormData();
             form.append('file', file);
             const postData = await updatePhoto(form);
             if (postData.status === 0) {
                 setUser(postData?.data)
-                alert(postData.message)
-
-                document.getElementById('form-account').reload();
+                toast.success(postData.message,{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored", onClose: () => {
+                    document.getElementById('form-account').reload();
+                }})
             }
         }else{
-            alert('Pilih foto terlebih dahulu')
+            toast.error('Pilih foto terlebih dahulu',{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored"})
         }
 
     }
@@ -65,7 +68,10 @@ const AccountForm = () => {
         e.preventDefault()
         const first_name = e.target.firstName.value
         const last_name = e.target.lastName.value
-
+        const email = e.target.email.value
+        if(first_name === '' || last_name === '' || email === '') {
+            toast.error('Kolom tidak boleh kosong',{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored"})
+        }
         const data = {
             first_name,
             last_name
@@ -76,15 +82,17 @@ const AccountForm = () => {
         if (postData.status === 0) {
             setEdit(!edit)
             setUser(postData?.data)
-            alert(postData.message)
+            toast.success(postData.message,{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored"})
         }else{
             setEdit(false)
-            alert(postData.message)
+            toast.error(postData.message,{position: "bottom-right",autoClose: 3000,hideProgressBar: false,closeOnClick: false,pauseOnHover: true,draggable: true,progress: undefined,theme: "colored"})
         }
-        console.log(data);
 
     }
 
+    function logoutHandler() {
+        dispatch(AuthLogout());
+    }
 
 
     return (
@@ -142,13 +150,15 @@ const AccountForm = () => {
 
                 {!edit &&
                     (<><Button classname='bg-white border border-red-900 text-red-600 font-semibold py-2 rounded-md mt-6 w-full cursor-pointer'>Edit Profil</Button>
-                    <button type='button' className='bg-red-600 text-white font-semibold py-2 rounded-md w-full  cursor-pointer' onClick={Logout}>Logout</button></>)
+                    <button type='button' className='bg-red-600 text-white font-semibold py-2 rounded-md w-full  cursor-pointer' onClick={logoutHandler}>Logout</button></>)
                 }
                 
                 
                 
             </form>
+            <ToastContainer/>
         </div>
+        
     )
 }
 
